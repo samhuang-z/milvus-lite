@@ -28,6 +28,6 @@ elif [ "$#" -eq 1 ]; then
 elif [ "$#" -eq 2 ]; then
     TAG=$1
     CACAN_CACHE=$2
-    docker build -t build_milvus_lite:$TAG . \
+    docker build --network host -t build_milvus_lite:$TAG . \
         && docker run --rm -e CONAN_USER_HOME=/workspace/conan -v $CACAN_CACHE:/workspace/conan -v $PWD:/workspace/dist build_milvus_lite:$TAG $TAG
 fi

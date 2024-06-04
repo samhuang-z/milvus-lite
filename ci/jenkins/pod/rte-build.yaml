@@ -9,7 +9,7 @@ metadata:
 spec:
   enableServiceLinks: false
   nodeSelector:
-    name: 4am-node16
+    kubernetes.io/hostname: 4am-node16
   containers:
   - name: main
     image: milvusdb/krte:20211213-dcc15e9

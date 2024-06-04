@@ -42,18 +42,20 @@ pipeline {
         stage ('Build'){
             steps {
                 container('main') {
-                      script {
-                          sh 'printenv'
-                          sh 'sleep 600'
-                          def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
-                          sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
+                  script {
+                      sh 'printenv'
+                      def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
+                      sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
+                      dir ('scripts') {
+                          sh 'chmod +x ./build.sh'
+                          sh './build.sh main /root'
                       }
+                      sh 'sleep 600'
+                  }
                 }
             }
+
         }
-
-
-    }
     post{
         unsuccessful {
                 container('jnlp') {
@@ -68,7 +70,6 @@ pipeline {
                         }
                     }
                 }
-            }
         }
-}
-
+    }
+    }

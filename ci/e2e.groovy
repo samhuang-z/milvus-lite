@@ -42,6 +42,9 @@ pipeline {
             steps {
                 container('main') {
                     script {
+                        sh """
+                        MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh
+                        """
                         sh 'printenv'
                         def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
                         sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'

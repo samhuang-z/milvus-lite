@@ -42,18 +42,12 @@ pipeline {
         stage ('Build'){
             steps {
                 container('main') {
-                    dir ('build'){
-                            sh """
-                            MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./set_docker_mirror.sh
-                            """
-                    }
-                    dir ('tests/scripts') {
-                        script {
-                            sh 'printenv'
-                            def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
-                            sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
-                        }
-                    }
+                      script {
+                          sh 'printenv'
+                          sh 'sleep 600'
+                          def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
+                          sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
+                      }
                 }
             }
         }

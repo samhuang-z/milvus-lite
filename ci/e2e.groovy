@@ -42,8 +42,8 @@ pipeline {
             steps {
                 container('main') {
                     script {
+                        sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
                         sh '''
-                         sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
                         git submodule update --init --recursive
 
                         MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh

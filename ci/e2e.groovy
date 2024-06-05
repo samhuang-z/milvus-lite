@@ -43,12 +43,11 @@ pipeline {
                 container('main') {
                     script {
                         sh '''
+                        git submodule update --init --recursive
+
                             git config --global --add safe.directory /home/jenkins/agent/workspace
                             git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty
                             git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty/milvus
-                          '''
-                        sh '''
-                        git submodule update --init --recursive
 
                         MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh
                         '''

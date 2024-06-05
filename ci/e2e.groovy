@@ -42,7 +42,11 @@ pipeline {
             steps {
                 container('main') {
                     script {
-                        sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
+                        sh '''
+                            git config --global --add safe.directory /home/jenkins/agent/workspace
+                            git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty
+                            git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty/milvus
+                          '''
                         sh '''
                         git submodule update --init --recursive
 

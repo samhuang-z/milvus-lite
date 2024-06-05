@@ -51,7 +51,7 @@ pipeline {
                         // def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
                         // sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
                         sh '''
-                         docker run --net=host -v /root/milvus-lite:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite milvusdb/milvus-env:lite-main bash -c "cd python; python3 setup.py bdist_wheel"
+                         docker run --net=host -v \$PWD:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite milvusdb/milvus-env:lite-main bash -c "cd python; python3 setup.py bdist_wheel"
                          '''
                         // dir('scripts') {
                         //     sh 'chmod +x ./build.sh'

@@ -43,13 +43,13 @@ pipeline {
                 container('main') {
                     script {
                         sh '''
+                         sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
                         git submodule update --init --recursive
 
                         MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh
                         '''
                         // sh 'printenv'
                         // def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
-                        // sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
                         sh '''
                          docker run --net=host -e CONAN_USER_HOME=/root/  -v \$PWD:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite  milvusdb/milvus-env:ubuntu20.04-20240520-d27db99  bash -c "cd python; python3 setup.py bdist_wheel"
                          '''

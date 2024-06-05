@@ -13,7 +13,7 @@ pipeline {
         parallelsAlwaysFailFast()
         preserveStashes(buildCount: 5)
         disableConcurrentBuilds(abortPrevious: true)
-        // skipDefaultCheckout()
+    // skipDefaultCheckout()
     }
     agent {
             kubernetes {
@@ -46,12 +46,11 @@ pipeline {
                         // checkout scm
                         // git submodule update --init --recursive
 
-                            // chown -R jenkins:jenkins /home/jenkins/agent/workspace/thirdparty/
-                            // git config --global --add safe.directory /home/jenkins/agent/workspace
-                            // git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty
-                            // git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty/milvus
+                        // chown -R jenkins:jenkins /home/jenkins/agent/workspace/thirdparty/
+                        // git config --global --add safe.directory /home/jenkins/agent/workspace
+                        // git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty
+                        // git config --global --add safe.directory /home/jenkins/agent/workspace/thirdparty/milvus
                         sh '''
-
 
                         MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh
                         '''
@@ -78,21 +77,24 @@ pipeline {
             steps {
                 container('pytest') {
                     script {
-                      sh '''
-                        
-                        sleep 600
+                        sh '''
+
                         pip install ./python/dist/*.whl
 
+                        '''
+
+                        dir('tests') {
+                            sh '''
                         export PIP_TRUSTED_HOST="nexus-nexus-repository-manager.nexus"
                         export PIP_INDEX_URL="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/simple"
                         export PIP_INDEX="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/pypi"
                         export PIP_FIND_LINKS="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/pypi"
                         python3 -m pip install --no-cache-dir -r requirements.txt --timeout 300 --retries 6
 
-                        pytest -s  -v  --tags  L0  --enable_milvus_local_api  lite-e2e.db 
-                        
+                        pytest -s  -v  --tags  L0  --enable_milvus_local_api  lite-e2e.db
+
                       '''
-                      
+                        }
                     }
                 }
             }

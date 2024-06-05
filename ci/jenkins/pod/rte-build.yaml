@@ -8,6 +8,9 @@ metadata:
   namespace: milvus-ci
 spec:
   enableServiceLinks: false
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
   nodeSelector:
     kubernetes.io/hostname: 4am-node16
   containers:

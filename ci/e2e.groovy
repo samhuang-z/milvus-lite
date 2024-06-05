@@ -42,17 +42,47 @@ pipeline {
             steps {
                 container('main') {
                     script {
-                        sh """
+                        sh '''
+                        git submodule update --init --recursive
+
                         MIRROR_URL="https://docker-nexus-ci.zilliz.cc" ./ci/set_docker_mirror.sh
-                        """
-                        sh 'printenv'
-                        def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
-                        sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
-                        dir('scripts') {
-                            sh 'chmod +x ./build.sh'
-                            sh './build.sh main /root'
-                        }
-                        sh 'sleep 600'
+                        '''
+                        // sh 'printenv'
+                        // def date = sh(returnStdout: true, script: 'date +%Y%m%d').trim()
+                        // sh 'git config --global --add safe.directory /home/jenkins/agent/workspace'
+                        sh '''
+                         docker run -it -v  /root/milvus-lite:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite milvusdb/milvus-env:lite-main bash -c "cd python; python3 setup.py bdist_wheel"
+                         '''
+                        // dir('scripts') {
+                        //     sh 'chmod +x ./build.sh'
+                        //     sh './build.sh main /root'
+                        // }
+
+                        // sh 'sleep 600'
+                        archiveArtifacts artifacts: 'python/dist/*.whl',
+                               allowEmptyArchive: true,
+                               fingerprint: true,
+                               onlyIfSuccessful: true
+                    }
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                container('pytest') {
+                    script {
+                      sh '''
+                        
+                        sleep 600
+                        
+
+                        export PIP_TRUSTED_HOST="nexus-nexus-repository-manager.nexus"
+                        export PIP_INDEX_URL="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/simple"
+                        export PIP_INDEX="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/pypi"
+                        export PIP_FIND_LINKS="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/pypi"
+                        python3 -m pip install --no-cache-dir -r requirements.txt --timeout 300 --retries 6
+                      '''
+                      
                     }
                 }
             }

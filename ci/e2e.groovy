@@ -81,7 +81,7 @@ pipeline {
                       sh '''
                         
                         sleep 600
-                        
+                        pip install ./python/dist/*.whl
 
                         export PIP_TRUSTED_HOST="nexus-nexus-repository-manager.nexus"
                         export PIP_INDEX_URL="http://nexus-nexus-repository-manager.nexus:8081/repository/pypi-all/simple"

@@ -13,7 +13,7 @@ pipeline {
         parallelsAlwaysFailFast()
         preserveStashes(buildCount: 5)
         disableConcurrentBuilds(abortPrevious: true)
-        skipDefaultCheckout()
+        // skipDefaultCheckout()
     }
     agent {
             kubernetes {
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 container('main') {
                     script {
-                        checkout scm
+                        // checkout scm
 
                         sh '''
                         git submodule update --init --recursive

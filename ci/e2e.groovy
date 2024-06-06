@@ -71,7 +71,7 @@ pipeline {
                 }
             }
         }
-        stage('ahive Artifacts ') {
+        stage('arhive Artifacts ') {
             steps {
                 container('main') {
                         archiveArtifacts artifacts: 'python/dist/*.whl',
@@ -85,18 +85,15 @@ pipeline {
             steps {
 
                 container('pytest') {
-                    script {
                         sh '''
                         pip install ./python/dist/*.whl
                         '''
-                    }
                 }
             }
         }
         stage('Test') {
             steps {
                 container('pytest') {
-                    script {
                         // sh '''
                         //
                         // pip install ./python/dist/*.whl
@@ -108,10 +105,10 @@ pipeline {
                               bash ci/run_test.sh
                       '''
                         }
-                    }
                 }
             }
         }
+  }
     post {
         unsuccessful {
                 container('jnlp') {

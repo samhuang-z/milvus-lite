@@ -50,7 +50,7 @@ pipeline {
                         sh '''
                          docker run --net=host  \
                             -e CONAN_USER_HOME=/root/  -v \$PWD:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite  \
-                            milvusdb/milvus-env:ubuntu20.04-20240520-d27db99 bash ci/entrypoint.sh
+                            milvusdb/milvus-env:lite-main bash ci/entrypoint.sh
                          '''
                     }
                 }

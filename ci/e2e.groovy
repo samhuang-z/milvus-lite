@@ -92,6 +92,7 @@ pipeline {
                     }
                 }
             }
+        }
         stage('Test') {
             steps {
                 container('pytest') {
@@ -110,7 +111,6 @@ pipeline {
                     }
                 }
             }
-        }
         }
     post {
         unsuccessful {

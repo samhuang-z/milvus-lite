@@ -59,8 +59,7 @@ pipeline {
                         sh '''
                          docker run --net=host  \
                             -e CONAN_USER_HOME=/root/  -v \$PWD:/root/milvus-lite -v /root/.conan:/root/.conan -w /root/milvus-lite  \
-                            milvusdb/milvus-env:ubuntu20.04-20240520-d27db99  \
-                            bash -c "git config --global --add safe.directory /root/milvus-lite/thirdparty/milvus;cd python; python3 setup.py bdist_wheel"
+                            milvusdb/milvus-env:ubuntu20.04-20240520-d27db99 bash ci/entrypoint.sh
                          '''
                         // dir('scripts') {
                         //     sh 'chmod +x ./build.sh'

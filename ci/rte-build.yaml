@@ -49,8 +49,8 @@ spec:
       name: cgroup
     - mountPath: /root/.conan
       name: build-cache
-    - mountPath: /ci-logs
-      name: ci-logs  
+    - mountPath: /tmp/ci_logs
+      name: ci-logs
   - name: pytest
     image: harbor.milvus.io/dockerhub/milvusdb/pytest:20240516-9536e79
     resources:
@@ -61,7 +61,7 @@ spec:
         cpu: "0.5"
         memory: 5Gi
     volumeMounts:
-    - mountPath: /tmp/ci-logs
+    - mountPath: /tmp/ci_logs
       name: ci-logs
   volumes:
   - emptyDir: {}

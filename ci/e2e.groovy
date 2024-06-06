@@ -66,24 +66,41 @@ pipeline {
                         //     sh './build.sh main /root'
                         // }
 
-                        // sh 'sleep 600'
-                        archiveArtifacts artifacts: 'python/dist/*.whl',
-                               allowEmptyArchive: true,
-                               fingerprint: true,
-                               onlyIfSuccessful: true
+                    // sh 'sleep 600'
                     }
                 }
             }
         }
+        stage('ahive Artifacts ') {
+            steps {
+                container('main') {
+                        archiveArtifacts artifacts: 'python/dist/*.whl',
+                               allowEmptyArchive: true,
+                               fingerprint: true,
+                               onlyIfSuccessful: true
+                }
+            }
+        }
+        stage('install wheel') {
+            steps {
+
+                container('pytest') {
+                    script {
+                        sh '''
+                        pip install ./python/dist/*.whl
+                        '''
+                    }
+                }
+            }
         stage('Test') {
             steps {
                 container('pytest') {
                     script {
-                        sh '''
-
-                        pip install ./python/dist/*.whl
-
-                        '''
+                        // sh '''
+                        //
+                        // pip install ./python/dist/*.whl
+                        //
+                        // '''
 
                         dir('tests/milvus_lite') {
                             sh '''
@@ -94,7 +111,7 @@ pipeline {
                 }
             }
         }
-    }
+        }
     post {
         unsuccessful {
                 container('jnlp') {
@@ -111,4 +128,4 @@ pipeline {
                 }
         }
     }
-}
+    }

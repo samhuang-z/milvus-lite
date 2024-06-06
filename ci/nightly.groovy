@@ -65,7 +65,7 @@ pipeline {
             steps {
                 container('pytest') {
                     sh '''
-                    bash ci/test.sh
+                    bash ci/test.sh -m nightly
                   '''
                 }
             }

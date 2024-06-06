@@ -100,11 +100,9 @@ pipeline {
                         //
                         // '''
 
-                        dir('tests/milvus_lite') {
                             sh '''
-                              bash ci/run_test.sh
+                              bash ci/test.sh
                       '''
-                        }
                 }
             }
         }

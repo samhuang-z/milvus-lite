@@ -5,5 +5,6 @@ export PIP_INDEX="https://nexus-ci.zilliz.cc/repository/pypi-all/pypi"
 export PIP_FIND_LINKS="https://nexus-ci.zilliz.cc/repository/pypi-all/pypi"
 python3 -m pip install --no-cache-dir -r requirements.txt --timeout 300 --retries 6
 
+cd tests/milvus_lite
 pytest -s  -v  --tags  L0  --enable_milvus_local_api  lite-e2e.db
 

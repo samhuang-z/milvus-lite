@@ -16,7 +16,7 @@ pipeline {
                 cloud '4am'
                 inheritFrom 'milvus-e2e-4am'
                 defaultContainer 'main'
-                yamlFile 'ci/jenkins/pod/rte-build.yaml'
+                yamlFile 'ci/rte-build.yaml'
                 customWorkspace '/home/jenkins/agent/workspace'
             }
     }
@@ -73,18 +73,18 @@ pipeline {
     }
     post {
         unsuccessful {
-                container('jnlp') {
-                    dir('tests/scripts') {
-                        script {
-                            def authorEmail = sh(returnStdout: true, script: './get_author_email.sh ')
-                            emailext subject: '$DEFAULT_SUBJECT',
-                            body: '$DEFAULT_CONTENT',
-                            recipientProviders: [developers(), culprits()],
-                            replyTo: '$DEFAULT_REPLYTO',
-                            to: "${authorEmail},devops@zilliz.com"
-                        }
+            container('jnlp') {
+                dir('ci') {
+                    script {
+                        def authorEmail = sh(returnStdout: true, script: './get_author_email.sh ')
+                        emailext subject: '$DEFAULT_SUBJECT',
+                      body: '$DEFAULT_CONTENT',
+                      recipientProviders: [developers(), culprits()],
+                      replyTo: '$DEFAULT_REPLYTO',
+                      to: "${authorEmail},devops@zilliz.com"
                     }
                 }
+            }
         }
     }
 }
